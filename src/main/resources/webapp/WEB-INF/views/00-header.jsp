@@ -43,9 +43,9 @@
 <body>
 <div class="main">
     <div class="top-banner">
-        <div class="container">
-            <a href="${ctxPath}/manager/home"><img src="${ctxPath}/static/images/logo2.png" height="80"></a>
-        </div>
+<%--        <div class="container">--%>
+<%--            <a href="${ctxPath}/manager/home"><img src="${ctxPath}/static/images/logo2.png" height="80"></a>--%>
+<%--        </div>--%>
     </div>
     <div class="top-menu">
         <div class="container">
@@ -63,14 +63,14 @@
                     </li>
                     <li><a>OPERATIONS &raquo;</a>
                         <ul>
-                            <li><a href="${ctxPath}/manager/operations/v1.2">OCPP v1.2</a></li>
-                            <li><a href="${ctxPath}/manager/operations/v1.5">OCPP v1.5</a></li>
+<%--                            <li><a href="${ctxPath}/manager/operations/v1.2">OCPP v1.2</a></li>--%>
+<%--                            <li><a href="${ctxPath}/manager/operations/v1.5">OCPP v1.5</a></li>--%>
                             <li><a href="${ctxPath}/manager/operations/v1.6">OCPP v1.6</a></li>
                             <li><a href="${ctxPath}/manager/operations/tasks">Tasks</a></li>
                         </ul>
                     </li>
                     <li><a href="${ctxPath}/manager/settings">SETTINGS</a></li>
-                    <li><a href="${ctxPath}/manager/log">LOG</a></li>
+<%--                    <li><a href="${ctxPath}/manager/log">LOG</a></li>--%>
                     <li><a href="${ctxPath}/manager/about">ABOUT</a></li>
                     <li><a href="${ctxPath}/manager/signout">SIGN OUT</a></li>
                 </ul>
