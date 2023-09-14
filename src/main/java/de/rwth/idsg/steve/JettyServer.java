@@ -117,6 +117,7 @@ public class JettyServer {
 
         steveAppContext = new SteveAppContext();
         server.setHandler(steveAppContext.getHandlers());
+
     }
 
     private ServerConnector httpConnector(HttpConfiguration httpConfig) {

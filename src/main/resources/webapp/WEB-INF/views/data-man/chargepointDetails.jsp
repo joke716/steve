@@ -89,6 +89,7 @@
                     <tr><td>Charge Point Vendor:</td><td>${cp.chargeBox.chargePointVendor}</td></tr>
                     <tr><td>Charge Point Model:</td><td>${cp.chargeBox.chargePointModel}</td></tr>
                     <tr><td>Charge Point Serial Number:</td><td>${cp.chargeBox.chargePointSerialNumber}</td></tr>
+                    <tr><td>Charge Point Pin Code:</td><td>${cp.chargeBox.pinCode}</td></tr>
                     <tr><td>Charge Box Serial Number:</td><td>${cp.chargeBox.chargeBoxSerialNumber}</td></tr>
                     <tr><td>Firmware Version:</td><td>${cp.chargeBox.fwVersion}</td></tr>
                     <tr><td>Firmware Update Timestamp:</td><td>${cp.chargeBox.fwUpdateTimestamp}</td></tr>

@@ -18,6 +18,7 @@
  */
 package de.rwth.idsg.steve;
 
+import com.sun.net.httpserver.HttpHandler;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.SimpleInstanceManager;
@@ -31,10 +32,12 @@ import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.gzip.GzipHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.websocket.core.WebSocketConstants;
 import org.eclipse.jetty.websocket.server.JettyWebSocketServerContainer;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -96,11 +99,20 @@ public class SteveAppContext {
         return gzipHandler;
     }
 
+/*
+    private Handler getApi() {
+        HttpHandler handler = new ApiHandler();
+        // "/api/*" 경로로 매핑
+        webAppContext.addServlet(handler, "/api/*");
+        return handler;
+    }
+*/
+
+
     private WebAppContext initWebApp() {
         WebAppContext ctx = new WebAppContext();
         ctx.setContextPath(CONFIG.getContextPath());
         ctx.setResourceBase(getWebAppURIAsString());
-
         // if during startup an exception happens, do not swallow it, throw it
         ctx.setThrowUnavailableOnStartupException(true);
 
@@ -109,10 +121,12 @@ public class SteveAppContext {
 
         ServletHolder web = new ServletHolder("spring-dispatcher", new DispatcherServlet(springContext));
         ServletHolder cxf = new ServletHolder("cxf", new CXFServlet());
+     //   ServletHolder api = new ServletHolder("api-dispatcher", new ApiHandler());
 
         ctx.addEventListener(new ContextLoaderListener(springContext));
         ctx.addServlet(web, CONFIG.getSpringMapping());
         ctx.addServlet(cxf, CONFIG.getCxfMapping() + "/*");
+    //    ctx.addServlet(api, CONFIG.getApiMapping() + "/*");
 
         if (CONFIG.getProfile().isProd()) {
             // If PROD, add security filter

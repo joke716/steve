@@ -50,6 +50,7 @@ public final class OcppTagFormMapper {
             parentIdTag = ControllerHelper.EMPTY_OPTION;
         }
         form.setParentIdTag(parentIdTag);
+        form.setNickName(record.getNickName());
 
         return form;
     }

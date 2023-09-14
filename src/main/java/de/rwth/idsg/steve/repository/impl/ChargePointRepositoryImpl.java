@@ -295,7 +295,10 @@ public class ChargePointRepositoryImpl implements ChargePointRepository {
         return ctx.transactionResult(configuration -> {
             DSLContext ctx = DSL.using(configuration);
             try {
-                Integer addressId = addressRepository.updateOrInsert(ctx, form.getAddress());
+                Integer addressId = null;
+                if (!form.getAddress().isEmpty()) {
+                    addressId = addressRepository.updateOrInsert(ctx, form.getAddress());
+                }
                 return addChargePointInternal(ctx, form, addressId);
 
             } catch (DataAccessException e) {
@@ -354,6 +357,7 @@ public class ChargePointRepositoryImpl implements ChargePointRepository {
                   .set(CHARGE_BOX.REGISTRATION_STATUS, form.getRegistrationStatus())
                   .set(CHARGE_BOX.NOTE, form.getNote())
                   .set(CHARGE_BOX.ADMIN_ADDRESS, form.getAdminAddress())
+                  .set(CHARGE_BOX.PIN_CODE, form.getPinCode())
                   .set(CHARGE_BOX.ADDRESS_PK, addressPk)
                   .returning(CHARGE_BOX.CHARGE_BOX_PK)
                   .fetchOne()

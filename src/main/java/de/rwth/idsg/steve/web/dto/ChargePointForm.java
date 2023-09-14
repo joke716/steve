@@ -64,4 +64,6 @@ public class ChargePointForm {
 
     @URL(message = "Admin address must be a valid URL")
     private String adminAddress;
+
+    private String pinCode;
 }

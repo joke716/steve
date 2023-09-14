@@ -18,9 +18,12 @@
  */
 package de.rwth.idsg.steve;
 
+import de.rwth.idsg.steve.config.BeanConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.TimeZone;
 

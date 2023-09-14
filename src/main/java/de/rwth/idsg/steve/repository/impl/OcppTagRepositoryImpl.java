@@ -203,6 +203,7 @@ public class OcppTagRepositoryImpl implements OcppTagRepository {
                       .set(OCPP_TAG.EXPIRY_DATE, toDateTime(u.getExpiryDate()))
                       .set(OCPP_TAG.MAX_ACTIVE_TRANSACTION_COUNT, u.getMaxActiveTransactionCount())
                       .set(OCPP_TAG.NOTE, u.getNote())
+                      .set(OCPP_TAG.NICK_NAME, u.getNickName())
                       .returning(OCPP_TAG.OCPP_TAG_PK)
                       .fetchOne()
                       .getOcppTagPk();
@@ -224,6 +225,7 @@ public class OcppTagRepositoryImpl implements OcppTagRepository {
                .set(OCPP_TAG.EXPIRY_DATE, toDateTime(u.getExpiryDate()))
                .set(OCPP_TAG.MAX_ACTIVE_TRANSACTION_COUNT, u.getMaxActiveTransactionCount())
                .set(OCPP_TAG.NOTE, u.getNote())
+               .set(OCPP_TAG.NICK_NAME, u.getNickName())
                .where(OCPP_TAG.OCPP_TAG_PK.equal(u.getOcppTagPk()))
                .execute();
         } catch (DataAccessException e) {

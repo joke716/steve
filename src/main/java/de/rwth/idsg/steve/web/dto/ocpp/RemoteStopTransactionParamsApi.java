@@ -16,22 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package de.rwth.idsg.steve.repository.dto;
+package de.rwth.idsg.steve.web.dto.ocpp;
 
-import de.rwth.idsg.steve.ocpp.OcppProtocol;
-import lombok.Builder;
+import de.rwth.idsg.steve.ocpp.OcppTransport;
 import lombok.Getter;
-import org.joda.time.DateTime;
+import lombok.Setter;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Sevket Goekay <sevketgokay@gmail.com>
- * @since 17.11.2015
+ * @since 01.01.2015
  */
 @Getter
-@Builder
-public final class UpdateChargeboxParams {
-    private final OcppProtocol ocppProtocol;
-    private final DateTime heartbeatTimestamp;
-    private final String vendor, model, pointSerial, boxSerial, fwVersion,
-            iccid, imsi, meterType, meterSerial, chargeBoxId, pinCode;
+@Setter
+public class RemoteStopTransactionParamsApi {
+    private OcppTransport ocppTransport;
+
+    @NotNull(message = "chargeBox ID is required")
+    private String chargeBoxId;
+
+    @NotNull(message = "Transaction ID is required")
+    private Integer transactionId;
 }

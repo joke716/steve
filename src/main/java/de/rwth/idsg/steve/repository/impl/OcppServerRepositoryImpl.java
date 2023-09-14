@@ -83,6 +83,7 @@ public class OcppServerRepositoryImpl implements OcppServerRepository {
            .set(CHARGE_BOX.CHARGE_POINT_MODEL, p.getModel())
            .set(CHARGE_BOX.CHARGE_POINT_SERIAL_NUMBER, p.getPointSerial())
            .set(CHARGE_BOX.CHARGE_BOX_SERIAL_NUMBER, p.getBoxSerial())
+           .set(CHARGE_BOX.PIN_CODE, p.getPinCode())
            .set(CHARGE_BOX.FW_VERSION, p.getFwVersion())
            .set(CHARGE_BOX.ICCID, p.getIccid())
            .set(CHARGE_BOX.IMSI, p.getImsi())

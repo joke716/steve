@@ -63,7 +63,7 @@ public class ChargePointServiceInvoker {
      */
     private void run(String chargeBoxId, CommunicationTask task) {
         RequestType request = task.getRequest();
-
+        log.info("chargeBoxId12222222 : {} "+chargeBoxId);
         ActionResponsePair pair = typeStore.findActionResponse(request);
         if (pair == null) {
             throw new SteveException("Action name is not found");

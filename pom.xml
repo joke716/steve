@@ -40,12 +40,14 @@
         <spring.version>5.3.23</spring.version>
         <spring.security.version>5.7.10</spring.security.version>
         <mysql.jdbc.version>8.0.30</mysql.jdbc.version>
+        <swegger.version>3.0.0</swegger.version>
         <jetty.version>10.0.14</jetty.version>
         <lombok.version>1.18.28</lombok.version>
         <jackson.version>2.15.2</jackson.version>
         <plugin.license-maven.version>4.2</plugin.license-maven.version>
 
         <!-- In Mysql: schema == database (http://dev.mysql.com/doc/refman/5.6/en/glossary.html#glos_schema) -->
+        <!--suppress UnresolvedMavenProperty -->
         <jdbcUrl>jdbc:mysql://${db.ip}:${db.port}/${db.schema}?useSSL=true&amp;serverTimezone=UTC</jdbcUrl>
     </properties>
 
@@ -352,9 +354,12 @@
                     <cleanDisabled>true</cleanDisabled>
                     <driver>com.mysql.cj.jdbc.Driver</driver>
                     <url>${jdbcUrl}</url>
+                    <!--suppress UnresolvedMavenProperty -->
                     <user>${db.user}</user>
+                    <!--suppress UnresolvedMavenProperty -->
                     <password>${db.password}</password>
                     <schemas>
+                        <!--suppress UnresolvedMavenProperty -->
                         <schema>${db.schema}</schema>
                     </schemas>
                     <locations>
@@ -404,7 +409,9 @@
                     <jdbc>
                         <driver>com.mysql.cj.jdbc.Driver</driver>
                         <url>${jdbcUrl}</url>
+                        <!--suppress UnresolvedMavenProperty -->
                         <user>${db.user}</user>
+                        <!--suppress UnresolvedMavenProperty -->
                         <password>${db.password}</password>
                     </jdbc>
 
@@ -413,6 +420,7 @@
                             <name>org.jooq.meta.mysql.MySQLDatabase</name>
                             <includes>.*</includes>
                             <excludes/>
+                            <!--suppress UnresolvedMavenProperty -->
                             <inputSchema>${db.schema}</inputSchema>
                             <unsignedTypes>false</unsignedTypes>
 
@@ -499,14 +507,23 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-oas</artifactId>
-            <version>3.0.0</version>
+            <version>${swegger.version}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-spring-webmvc</artifactId>
-            <version>3.0.0</version>
+            <version>${swegger.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swegger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swegger.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.github.goekay</groupId>
             <artifactId>CompositeJKS</artifactId>
@@ -573,6 +590,11 @@
         </dependency>
 
         <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>

@@ -32,6 +32,12 @@
 			</td>
 		</tr>
 		<tr>
+			<td>Tag Nick Name:</td>
+			<td>
+				<form:input path="nickName" />
+			</td>
+		</tr>
+		<tr>
 			<td>Parent ID Tag:</td>
 			<td><form:select path="parentIdTag" items="${idTagList}"/></td>
 		</tr>

@@ -59,6 +59,7 @@ public class OcppTagForm {
     private Integer maxActiveTransactionCount;
 
     private String note;
+    private String nickName;
 
     /**
      * As specified in V0_9_9__update.sql default value is 1.
