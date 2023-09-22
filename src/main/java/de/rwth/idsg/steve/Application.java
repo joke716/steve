@@ -49,7 +49,7 @@ public class Application implements ApplicationStarter, AutoCloseable {
 
         switch (sc.getProfile()) {
             case DEV:
-                delegate = new SteveDevStarter();
+                delegate = new SteveProdStarter();
                 break;
             case TEST:
             case PROD:

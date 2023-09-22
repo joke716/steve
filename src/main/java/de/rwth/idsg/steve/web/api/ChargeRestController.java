@@ -18,27 +18,22 @@
  */
 package de.rwth.idsg.steve.web.api;
 
-import de.rwth.idsg.steve.SteveException;
-import de.rwth.idsg.steve.ocpp.OcppTransport;
+import de.rwth.idsg.steve.ocpp.CommunicationTask;
+import de.rwth.idsg.steve.ocpp.RequestResult;
 import de.rwth.idsg.steve.repository.ChargePointRepository;
+import de.rwth.idsg.steve.repository.TaskStore;
 import de.rwth.idsg.steve.repository.dto.ChargePoint;
 import de.rwth.idsg.steve.repository.dto.ChargePointSelect;
-import de.rwth.idsg.steve.repository.dto.OcppTag;
 import de.rwth.idsg.steve.service.ChargePointHelperService;
-import de.rwth.idsg.steve.service.ChargePointService12_Client;
 import de.rwth.idsg.steve.service.ChargePointService16_Client;
-import de.rwth.idsg.steve.service.OcppTagService;
 import de.rwth.idsg.steve.utils.mapper.ChargePointDetailsMapper;
 import de.rwth.idsg.steve.web.api.ApiControllerAdvice.ApiErrorResponse;
 import de.rwth.idsg.steve.web.dto.ChargePointForm;
-import de.rwth.idsg.steve.web.dto.OcppTagForm;
-import de.rwth.idsg.steve.web.dto.OcppTagQueryForm;
 import de.rwth.idsg.steve.web.dto.ocpp.*;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -49,6 +44,7 @@ import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -60,13 +56,16 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/v1/chargepoints", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class ChargeRestController {
-
+    @Autowired private TaskStore taskStore;
     @Autowired
     protected ChargePointRepository chargePointRepository;
     @Autowired protected ChargePointHelperService chargePointHelperService;
 
     private static final String REMOTE_START_TX_PATH = "/remoteStart";
     private static final String REMOTE_END_TX_PATH = "/remoteEnd";
+
+    private static final String REMOTE_HEARTBEAT_PATH = "/heartbeat";
+    private static final String REMOTE_HEARTBEAT_CONFIRM_PATH = "/task/{taskId}";
 
     @Autowired
     @Qualifier("ChargePointService16_Client")
@@ -145,6 +144,42 @@ public class ChargeRestController {
         ));
         client16.remoteStopTransaction(request);
         return params;
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Bad Request", response = ApiErrorResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = ApiErrorResponse.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = ApiErrorResponse.class),
+            @ApiResponse(code = 404, message = "Not Found", response = ApiErrorResponse.class),
+            @ApiResponse(code = 500, message = "Internal Server Error", response = ApiErrorResponse.class)}
+    )
+    @PostMapping(REMOTE_HEARTBEAT_PATH)
+    @ResponseBody
+    public RemoteTaskResponse heartBeat(@RequestBody @Valid RemoteHeartBeatRequest params) {
+        ChargePointSelect chargePointSelect = new ChargePointSelect(params.getOcppTransport(), params.getChargeBoxId());
+        TriggerMessageParams triggerMessageParams = new TriggerMessageParams();
+        triggerMessageParams.setTriggerMessage(TriggerMessageEnum.StatusNotification);
+        triggerMessageParams.setChargePointSelectList(List.of(chargePointSelect));
+        log.info("HeartBeat request: {}", triggerMessageParams);
+        RemoteTaskResponse remoteTaskResponse = new RemoteTaskResponse();
+        int taskNumber = client16.triggerMessage(triggerMessageParams);
+        remoteTaskResponse.setTaskNumber(taskNumber);
+        return remoteTaskResponse;
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Bad Request", response = ApiErrorResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = ApiErrorResponse.class),
+            @ApiResponse(code = 422, message = "Unprocessable Entity", response = ApiErrorResponse.class),
+            @ApiResponse(code = 404, message = "Not Found", response = ApiErrorResponse.class),
+            @ApiResponse(code = 500, message = "Internal Server Error", response = ApiErrorResponse.class)}
+    )
+    @GetMapping(REMOTE_HEARTBEAT_CONFIRM_PATH)
+    public Map<String, RequestResult> taskConfirm(@PathVariable("taskId") Integer taskId) {
+        CommunicationTask r = taskStore.get(taskId);
+        return r.getResultMap();
     }
 
     private int add(ChargePointForm form) {
